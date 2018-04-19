@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Reached</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
+    <string name="google_place_api">AIzaSyBrax4V-qPxA-zST_gVoBq0mBBfmqbsPnM</string>
+
+</resources>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tekbeast.reached.Main2Activity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="206dp"
+        android:layout_height="83dp"
+        android:layout_alignEnd="@+id/lg"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="161dp"
+        android:hint="Select Place" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="211dp"
+        android:layout_height="45dp"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="93dp"
+        android:hint="Select Number" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="67dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/imageButton2"
+        android:layout_marginTop="85dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/user" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="71dp"
+        android:layout_height="64dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="173dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/place" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginBottom="194dp"
+        android:ems="10"
+        android:hint="Enter Message"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="101dp"
+        android:text="Submit" />
+
+    <Button
+        android:id="@+id/button2"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button"
+        android:layout_marginEnd="27dp"
+        android:layout_toStartOf="@+id/button"
+        android:text="Update" />
+
+    <Button
+        android:id="@+id/button3"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button"
+        android:layout_toEndOf="@+id/textView3"
+        android:text="Delete" />
+
+    <TextView
+        android:id="@+id/lat"
+        android:layout_width="83dp"
+        android:layout_height="36dp"
+        android:visibility="invisible"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignTop="@+id/lg"
+        android:text="latitude " />
+
+    <TextView
+        android:id="@+id/lg"
+        android:layout_width="83dp"
+        android:layout_height="36dp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="218dp"
+        android:layout_marginEnd="126dp"
+        android:text="longitude" />
+</RelativeLayout>
