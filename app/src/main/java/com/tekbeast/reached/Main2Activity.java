@@ -63,6 +63,8 @@ public static final int REQUEST_READ_CONTACTS = 79;
 //                while(res.moveToNext()){
                     getcontact.setText(res.getString(1));
                     getplace.setText(res.getString(2));
+                    lt.setText(res.getString(3));
+                    lg.setText(res.getString(4));
                     editText.setText(res.getString(5));
                     button.setVisibility(View.INVISIBLE);
                     delete.setVisibility(View.VISIBLE);
@@ -199,7 +201,11 @@ public static final int REQUEST_READ_CONTACTS = 79;
                         cursor.moveToFirst();
 
                         String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
+                        number= number.replace(" ", "");
+                        if (number.startsWith("+91")) {
+                            number= number.replace("+91", "");
+                        }
+                        number=number.trim();
                         //contactName.setText(name);
                         getcontact.setText(number);
                         //contactEmail.setText(email);

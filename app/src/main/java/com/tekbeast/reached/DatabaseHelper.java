@@ -82,7 +82,7 @@ public Cursor getData(int id){
         String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+ COL_7+ "='active'";
         Cursor  cursor = database.rawQuery(query,null);
         if (cursor != null) {
-            cursor.moveToFirst();
+            //cursor.moveToFirst();
         }
         return cursor;
     }

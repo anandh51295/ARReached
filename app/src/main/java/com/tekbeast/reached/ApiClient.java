@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL="https://techskylimit.000webhostapp.com/android/";
+    public static final String BASE_URL="https://reached.000webhostapp.com/android/";
     public static Retrofit retrofit = null;
 
     public static Retrofit getApiClient(){

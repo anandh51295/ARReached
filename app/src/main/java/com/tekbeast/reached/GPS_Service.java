@@ -52,7 +52,7 @@ public class GPS_Service extends Service {
                     Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_LONG).show();
                 }
 //        StringBuffer buffer = new StringBuffer();
-                while (res.moveToNext()) {
+                else{while (res.moveToNext()) {
 //            buffer.append("id :"+res.getString(0)+"\n");
 //            buffer.append("Number :"+res.getString(1)+"\n");
 //            buffer.append("Place :"+res.getString(2)+"\n");
@@ -66,7 +66,7 @@ public class GPS_Service extends Service {
                         i.putExtra("id", res.getString(0));
                         i.putExtra("val", lat1+"// "+lng1+"// "+lat2+"// "+lng2);
                         sendBroadcast(i);
-                        //Toast.makeText(getApplicationContext(),"match found",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"match found",Toast.LENGTH_LONG).show();
                     }
                     else {
                         //Toast.makeText(getApplicationContext(),lat1+"// "+lng1+"// "+lat2+"// "+lng2,Toast.LENGTH_LONG).show();
@@ -75,7 +75,7 @@ public class GPS_Service extends Service {
                         i.putExtra("val", lat1+"// "+lng1+"// "+lat2+"// "+lng2);
                         sendBroadcast(i);
                     }
-                }
+                }}
                 // lat1 and lng1 are the values of a previously stored location
 
             }
