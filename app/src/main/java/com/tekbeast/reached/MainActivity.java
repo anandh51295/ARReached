@@ -76,7 +76,7 @@ DatabaseHelper mydb;
 
 
 //                    textView.append("\n" +intent.getExtras().get("coordinates"));
-                    Toast.makeText(getApplicationContext(), intent.getExtras().get("id").toString(),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), intent.getExtras().get("id").toString(),Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(), intent.getExtras().get("val").toString(),Toast.LENGTH_LONG).show();
 //                    Toast.makeText(getApplicationContext(), intent.getExtras().get("lat").toString(),Toast.LENGTH_LONG).show();
                    // Toast.makeText(getApplicationContext(), intent.getExtras().get("long").toString(),Toast.LENGTH_LONG).show();
@@ -106,8 +106,8 @@ DatabaseHelper mydb;
                         {
                             fph=ph;
                         }
-                        ms=res.getString(5);
-                        Toast.makeText(getApplicationContext(), fph+" "+ms, Toast.LENGTH_SHORT).show();
+                        ms=res.getString(5)+" \n Reached \n"+res.getString(2);
+                        //Toast.makeText(getApplicationContext(), fph+" "+ms, Toast.LENGTH_SHORT).show();
 
 //                        requestSmsPermission();
 
