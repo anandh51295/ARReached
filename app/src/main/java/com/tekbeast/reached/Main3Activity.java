@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Main3Activity extends AppCompatActivity {
-    Button btn,rt,cl;
+    Button btn,cl;
     EditText usr,pwd;
     TextView info;
     public static final String mypreference = "mypref";
@@ -27,7 +27,7 @@ public class Main3Activity extends AppCompatActivity {
         usr=(EditText)findViewById(R.id.usr);
         pwd=(EditText)findViewById(R.id.pwd);
         btn=(Button)findViewById(R.id.button4);
-        rt=(Button)findViewById(R.id.rt);
+
         cl=(Button)findViewById(R.id.cl);
         sharedpreferences = getSharedPreferences(mypreference,
                 Context.MODE_PRIVATE);
@@ -45,12 +45,7 @@ public class Main3Activity extends AppCompatActivity {
             }
         });
 
-        rt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                retrive();
-            }
-        });
+
         cl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,18 +60,7 @@ public class Main3Activity extends AppCompatActivity {
         pwd.setText("");
 
     }
-    public void retrive(){
-        sharedpreferences = getSharedPreferences(mypreference,
-                Context.MODE_PRIVATE);
 
-        if (sharedpreferences.contains(Name)) {
-            usr.setText(sharedpreferences.getString(Name, ""));
-        }
-        if (sharedpreferences.contains(Password)) {
-            pwd.setText(sharedpreferences.getString(Password, ""));
-
-        }
-    }
 
     public void Save() {
         String n = usr.getText().toString();

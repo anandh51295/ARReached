@@ -2,7 +2,6 @@ package com.tekbeast.reached;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -86,6 +85,17 @@ public Cursor getData(int id){
         }
         return cursor;
     }
+    public Cursor getin(){
+
+        SQLiteDatabase database =this.getWritableDatabase();
+        String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+ COL_7+ "='inactive'";
+        Cursor  cursor = database.rawQuery(query,null);
+        if (cursor != null) {
+            //cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
 
     public boolean updateData(String id,String number,String place,Double lat,Double lon, String msg){
         SQLiteDatabase db =this.getWritableDatabase();
@@ -116,6 +126,15 @@ public Cursor getData(int id){
     public Integer deleteData (String id){
         SQLiteDatabase db =this.getWritableDatabase();
        return db.delete(TABLE_NAME,"id=?",new String[]{id});
+
+    }
+
+    public Cursor deleteallData (){
+        SQLiteDatabase database =this.getWritableDatabase();
+        String query = "DELETE FROM "+TABLE_NAME+" WHERE "+ COL_7+ "='inactive'";
+        Cursor  cursor = database.rawQuery(query,null);
+
+        return cursor;
 
     }
 }

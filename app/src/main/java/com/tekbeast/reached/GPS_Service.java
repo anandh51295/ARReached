@@ -49,7 +49,7 @@ public class GPS_Service extends Service {
 
 
                 if (res.getCount() == 0) {
-                    Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_LONG).show();
                 }
 //        StringBuffer buffer = new StringBuffer();
                 else{while (res.moveToNext()) {
@@ -66,7 +66,7 @@ public class GPS_Service extends Service {
                         i.putExtra("id", res.getString(0));
                         i.putExtra("val", lat1+"// "+lng1+"// "+lat2+"// "+lng2);
                         sendBroadcast(i);
-                        Toast.makeText(getApplicationContext(),"match found",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"match found",Toast.LENGTH_LONG).show();
                     }
                     else {
                         //Toast.makeText(getApplicationContext(),lat1+"// "+lng1+"// "+lat2+"// "+lng2,Toast.LENGTH_LONG).show();
@@ -131,7 +131,7 @@ public class GPS_Service extends Service {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 0, listener);
 
     }
 

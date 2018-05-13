@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -123,6 +126,31 @@ DatabaseHelper mydb;
             };
         }
         registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
+
+        DatabaseHelper databaseHelper =new DatabaseHelper(this);
+//        SQLiteDatabase sqLiteDatabase= databaseHelper.getReadableDatabase();
+
+        Cursor res=databaseHelper.get();
+        if(res.getCount()==0){
+            //Toast.makeText(getApplicationContext(),"No Data Found",Toast.LENGTH_LONG).show();
+            items.clear();
+            adapter.notifyDataSetChanged();
+        }else{
+//        StringBuffer buffer = new StringBuffer();
+            if (items != null && items.size()>0)
+                items.clear();
+        while(res.moveToNext()){
+//            buffer.append("id :"+res.getString(0)+"\n");
+//            buffer.append("Number :"+res.getString(1)+"\n");
+//            buffer.append("Place :"+res.getString(2)+"\n");
+//            buffer.append("Message :"+res.getString(3)+"\n");
+//            buffer.append("Status :"+res.getString(4)+"\n");
+            items.add("ID:\t"+res.getString(0)+"."+"\n"+"Number:\t" + res.getString(1)+"\n"+ res.getString(2)+"\n"+"Message:\t"+res.getString(5)+"\n"+"lat:\t"+res.getDouble(3)+"\n"+"long:\t"+res.getDouble(4)+"\n"+"Status:\t"+res.getString(6));
+
+        }
+
+        adapter.notifyDataSetChanged();}
+
     }
 
 
@@ -144,11 +172,32 @@ DatabaseHelper mydb;
                     iddd= String.valueOf(idd);
                     Boolean r=mydb.upData(iddd);
                     if(r==true){
-                    Toast.makeText(getApplicationContext(),"Message Send Successfully",Toast.LENGTH_LONG).show();}
+                    Toast.makeText(getApplicationContext(),"Message Send Successfully",Toast.LENGTH_LONG).show();
+
+
+                        DatabaseHelper databaseHelper =new DatabaseHelper(getApplicationContext());
+//        SQLiteDatabase sqLiteDatabase= databaseHelper.getReadableDatabase();
+
+                        Cursor res=databaseHelper.get();
+                        if(res.getCount()==0){
+                            items.clear();
+                            adapter.notifyDataSetChanged();
+                        }else{
+                            if (items != null && items.size()>0)
+                                items.clear();
+                            while(res.moveToNext()){
+                                items.add("ID:\t"+res.getString(0)+"."+"\n"+"Number:\t" + res.getString(1)+"\n"+ res.getString(2)+"\n"+"Message:\t"+res.getString(5)+"\n"+"lat:\t"+res.getDouble(3)+"\n"+"long:\t"+res.getDouble(4)+"\n"+"Status:\t"+res.getString(6));
+
+                            }
+
+                            adapter.notifyDataSetChanged();}
+                    }
 
                 }
                 else if(response.body().getResponse().equals("nodata")){
                     Toast.makeText(getApplicationContext(),"Check your message and phone number",Toast.LENGTH_LONG).show();
+                    showAlert();
+
                 }
                 else if(response.body().getResponse().equals("not")){
                     showNotification();
@@ -158,7 +207,8 @@ DatabaseHelper mydb;
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Check Internet Connection",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Check Internet Connection",Toast.LENGTH_LONG).show();
+                showconnection();
             }
         });
     }
@@ -167,8 +217,50 @@ DatabaseHelper mydb;
         Notification.Builder builder = new Notification.Builder(MainActivity.this);
         Intent notificationIntent = new Intent(this,Main3Activity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+        builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable. notification_template_icon_bg)
                 .setContentTitle("Set Way2Sms gateway")
+                .setContentText("add username and password to send message")
+
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = builder.getNotification();
+        notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
+    }
+
+    private void showAlert() {
+        Notification mNotification;
+        Notification.Builder builder = new Notification.Builder(MainActivity.this);
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable. notification_template_icon_bg)
+                .setContentTitle("Check your Message and Number")
+                .setContentText("Sorry their might some problem in our server..!")
+                .setContentIntent(pendingIntent);
+
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = builder.getNotification();
+        notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
+
+    }
+
+    private void showconnection() {
+
+        Notification.Builder builder = new Notification.Builder(MainActivity.this);
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable. notification_template_icon_bg)
+                .setContentTitle("Turn On Internet")
+                .setContentText("Turn on Internet and GPS..!")
                 .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification = builder.getNotification();
@@ -189,7 +281,7 @@ DatabaseHelper mydb;
         DatabaseHelper databaseHelper =new DatabaseHelper(this);
 //        SQLiteDatabase sqLiteDatabase= databaseHelper.getReadableDatabase();
 
-        Cursor res=databaseHelper.getAllData();
+        Cursor res=databaseHelper.get();
 
 //        textView=(TextView)findViewById(R.id.textView4);
 
@@ -198,7 +290,7 @@ DatabaseHelper mydb;
 
         if(res.getCount()==0){
             Toast.makeText(getApplicationContext(),"No Data Found",Toast.LENGTH_LONG).show();
-        }
+        }else{
 //        StringBuffer buffer = new StringBuffer();
         while(res.moveToNext()){
 //            buffer.append("id :"+res.getString(0)+"\n");
@@ -209,7 +301,7 @@ DatabaseHelper mydb;
             items.add("ID:\t"+res.getString(0)+"."+"\n"+"Number:\t" + res.getString(1)+"\n"+ res.getString(2)+"\n"+"Message:\t"+res.getString(5)+"\n"+"lat:\t"+res.getDouble(3)+"\n"+"long:\t"+res.getDouble(4)+"\n"+"Status:\t"+res.getString(6));
 
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();}
 //        textView.setText(buffer.toString());
 
 
@@ -220,11 +312,12 @@ DatabaseHelper mydb;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+
                 Intent intent=new Intent(MainActivity.this,Main2Activity.class);
                 startActivity(intent);
-                finish();
+                //finish();
+                //Snackbar.make(view, "Reached Request added Successfully", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
             }
         });
 
@@ -260,7 +353,7 @@ DatabaseHelper mydb;
                 bundle.putString("ID",val);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                finish();
+                //finish();
                 //System.exit(0);
 
 
@@ -269,6 +362,8 @@ DatabaseHelper mydb;
         });
 
     }
+
+
     public void Get() {
         sharedpreferences = getSharedPreferences(mypreference,
                 Context.MODE_PRIVATE);
@@ -280,12 +375,12 @@ DatabaseHelper mydb;
             pass=sharedpreferences.getString(Password, "");
 
         }
-        if(user==null||pass==null||user==""||pass==""){
+        if(user==""||pass==""||user==null||pass==null){
             //Toast.makeText(getApplicationContext(),"Goto Settings to Set gateway for msg",Toast.LENGTH_SHORT).show();
             showNotification();
         }
         else {
-            Toast.makeText(getApplicationContext(),"user"+user+" pass"+pass,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"user"+user+" pass"+pass,Toast.LENGTH_SHORT).show();
             sendsms();
         }
     }
@@ -375,8 +470,12 @@ DatabaseHelper mydb;
 
         if (id == R.id.nav_slideshow) {
             // Handle the camera action
+            Intent intent= new Intent(MainActivity.this,Main4Activity.class);
+            startActivity(intent);
         }
          else if (id == R.id.nav_manage) {
+            Intent intent= new Intent(MainActivity.this,Main3Activity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
 

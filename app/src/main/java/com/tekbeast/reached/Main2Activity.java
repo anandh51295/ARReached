@@ -86,10 +86,11 @@ public static final int REQUEST_READ_CONTACTS = 79;
                 Integer isDeleted=mydb.deleteData(String.valueOf(id));
                 if(isDeleted>0){
                     id=0;
-                    Intent intent =new Intent(Main2Activity.this,MainActivity.class);
-
-                    startActivity(intent);
-                    finish();}
+                    //Intent intent =new Intent(Main2Activity.this,MainActivity.class);
+                    Toast.makeText(getApplicationContext(),"Deleted Successfully...!",Toast.LENGTH_LONG).show();
+                   // startActivity(intent);
+                    finish();
+                }
             }
         });
 
@@ -111,9 +112,9 @@ public static final int REQUEST_READ_CONTACTS = 79;
                 if(isUpdated==true){
                     id=0;
 //                        Toast.makeText(getApplicationContext(),"Added To List",Toast.LENGTH_LONG).show();
-                    Intent intent =new Intent(Main2Activity.this,MainActivity.class);
-
-                    startActivity(intent);
+                    //Intent intent =new Intent(Main2Activity.this,MainActivity.class);
+                    Toast.makeText(getApplicationContext(),"Updated Successfully...!",Toast.LENGTH_LONG).show();
+                    //startActivity(intent);
                     finish();
                 }
 
@@ -153,20 +154,25 @@ public static final int REQUEST_READ_CONTACTS = 79;
             @Override
             public void onClick(View view) {
                 place=getplace.getText().toString();
+                try{
                 ll=Double.parseDouble(lt.getText().toString());
-                lgg=Double.parseDouble(lg.getText().toString());
+                lgg=Double.parseDouble(lg.getText().toString());}
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
                 number=getcontact.getText().toString();
                 msg=editText.getText().toString();
                 String status="active";
                 int le=msg.length();
-                if(place!=""&&number!=""&&msg!=""&&le>0){
+
+                if(place!=""&&number!=""&&msg!=""&&le>0&&ll!=0&lgg!=0){
 
                    boolean isInserted= mydb.insertData(number,place,ll,lgg,msg,status);
                     if(isInserted==true){
 //                        Toast.makeText(getApplicationContext(),"Added To List",Toast.LENGTH_LONG).show();
-                        Intent intent =new Intent(Main2Activity.this,MainActivity.class);
-
-                        startActivity(intent);
+                        //Intent intent =new Intent(Main2Activity.this,MainActivity.class);
+                        Toast.makeText(getApplicationContext(),"Request added Successfully...!",Toast.LENGTH_LONG).show();
+                        //startActivity(intent);
                         finish();
                     }
 //                    Toast.makeText(getApplicationContext(),place+" "+number+" "+msg,Toast.LENGTH_LONG).show();

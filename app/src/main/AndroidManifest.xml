@@ -34,7 +34,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_place_api" />
 
-        <activity android:name=".Main3Activity"></activity>
+        <activity android:name=".Main3Activity" />
+        <activity android:name=".Main4Activity" />
     </application>
 
 </manifest>
