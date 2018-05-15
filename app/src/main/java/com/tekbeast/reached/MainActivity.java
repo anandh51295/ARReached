@@ -16,6 +16,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,6 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     public static final String mypreference = "mypref";
     public static final String Name = "nameKey";
     public static final String Password = "passKey";
+    boolean audio;
 //    DatabaseHelper mydb;
 //    TextView textView;
 DatabaseHelper mydb;
@@ -70,6 +73,10 @@ DatabaseHelper mydb;
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        audio=sharedPreferences.getBoolean("toggleButton", false);
+
         if(broadcastReceiver == null){
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
@@ -217,12 +224,30 @@ DatabaseHelper mydb;
         Notification.Builder builder = new Notification.Builder(MainActivity.this);
         Intent notificationIntent = new Intent(this,Main3Activity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
+        if(audio){Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);}
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable. notification_template_icon_bg)
                 .setContentTitle("Set Way2Sms gateway")
                 .setContentText("add username and password to send message")
+
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = builder.getNotification();
+        notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
+    }
+
+    private void showNotificationwhat() {
+
+        Notification.Builder builder = new Notification.Builder(MainActivity.this);
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
+        if(audio){Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);}
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable. notification_template_icon_bg)
+                .setContentTitle("Click send")
+                .setContentText("Send reached message in whatapp")
 
                 .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -235,8 +260,8 @@ DatabaseHelper mydb;
         Notification.Builder builder = new Notification.Builder(MainActivity.this);
         Intent notificationIntent = new Intent(this,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
+        if(audio){Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);}
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable. notification_template_icon_bg)
                 .setContentTitle("Check your Message and Number")
@@ -255,8 +280,8 @@ DatabaseHelper mydb;
         Notification.Builder builder = new Notification.Builder(MainActivity.this);
         Intent notificationIntent = new Intent(this,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
+        if(audio){Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);}
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable. notification_template_icon_bg)
                 .setContentTitle("Turn On Internet")
@@ -272,6 +297,12 @@ DatabaseHelper mydb;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        audio=sharedPreferences.getBoolean("toggleButton", false);
+
         listView=(ListView)findViewById(R.id.listv);
         items=new ArrayList<String>();
         adapter=new ArrayAdapter(this, R.layout.item_layout,R.id.txt,items);
@@ -375,15 +406,73 @@ DatabaseHelper mydb;
             pass=sharedpreferences.getString(Password, "");
 
         }
-        if(user==""||pass==""||user==null||pass==null){
-            //Toast.makeText(getApplicationContext(),"Goto Settings to Set gateway for msg",Toast.LENGTH_SHORT).show();
-            showNotification();
+        SharedPreferences sharedPref = getSharedPreferences("FileName",MODE_PRIVATE);
+        int spinnerValue = sharedPref.getInt("userChoiceSpinner",-1);
+        if(spinnerValue != -1) {
+            // set the selected value of the spinner
+            if(spinnerValue==0){
+
+                if(user==""||pass==""||user==null||pass==null){
+                    //Toast.makeText(getApplicationContext(),"Goto Settings to Set gateway for msg",Toast.LENGTH_SHORT).show();
+                    showNotification();
+                }
+                else {
+                    //Toast.makeText(getApplicationContext(),"user"+user+" pass"+pass,Toast.LENGTH_SHORT).show();
+
+                    sendsms();
+
+                }
+
+            }
+            else{
+                what();
+            }
+
         }
-        else {
-            //Toast.makeText(getApplicationContext(),"user"+user+" pass"+pass,Toast.LENGTH_SHORT).show();
-            sendsms();
+
+
+    }
+
+    private void what() {
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+
+        try {
+            String url = "https://api.whatsapp.com/send?phone=91"+ ph +"&text=" + URLEncoder.encode(ms, "UTF-8");
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(url));
+            if (i.resolveActivity(packageManager) != null) {
+                showNotificationwhat();
+                getApplicationContext().startActivity(i);
+                iddd= String.valueOf(idd);
+                Boolean r=mydb.upData(iddd);
+                if(r==true){
+                    //Toast.makeText(getApplicationContext(),"Message Send Successfully",Toast.LENGTH_LONG).show();
+
+
+                    DatabaseHelper databaseHelper =new DatabaseHelper(getApplicationContext());
+//        SQLiteDatabase sqLiteDatabase= databaseHelper.getReadableDatabase();
+
+                    Cursor res=databaseHelper.get();
+                    if(res.getCount()==0){
+                        items.clear();
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        if (items != null && items.size()>0)
+                            items.clear();
+                        while(res.moveToNext()){
+                            items.add("ID:\t"+res.getString(0)+"."+"\n"+"Number:\t" + res.getString(1)+"\n"+ res.getString(2)+"\n"+"Message:\t"+res.getString(5)+"\n"+"lat:\t"+res.getDouble(3)+"\n"+"long:\t"+res.getDouble(4)+"\n"+"Status:\t"+res.getString(6));
+
+                        }
+
+                        adapter.notifyDataSetChanged();}
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -412,7 +501,7 @@ DatabaseHelper mydb;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            Intent intent= new Intent(MainActivity.this,Main3Activity.class);
+            Intent intent= new Intent(MainActivity.this,Main6Activity.class);
             startActivity(intent);
             return true;
         }
@@ -474,7 +563,7 @@ DatabaseHelper mydb;
             startActivity(intent);
         }
          else if (id == R.id.nav_manage) {
-            Intent intent= new Intent(MainActivity.this,Main3Activity.class);
+            Intent intent= new Intent(MainActivity.this,Main6Activity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_share) {
