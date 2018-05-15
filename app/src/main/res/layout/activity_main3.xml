@@ -57,4 +57,22 @@
         android:layout_alignTop="@+id/button4"
         android:layout_marginEnd="20dp"
         android:text="Clear" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/button4"
+        android:layout_marginEnd="132dp"
+        android:text="Register" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:text="*Using Way2sms might work for sometime and might not work for sometimes...!" />
 </RelativeLayout>

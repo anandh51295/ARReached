@@ -1,6 +1,7 @@
 package com.tekbeast.reached;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Main3Activity extends AppCompatActivity {
-    Button btn,cl;
+    Button btn,cl,register;
     EditText usr,pwd;
-    TextView info;
+    TextView info,hint;
     public static final String mypreference = "mypref";
     public static final String Name = "nameKey";
     public static final String Password = "passKey";
@@ -27,7 +28,8 @@ public class Main3Activity extends AppCompatActivity {
         usr=(EditText)findViewById(R.id.usr);
         pwd=(EditText)findViewById(R.id.pwd);
         btn=(Button)findViewById(R.id.button4);
-
+        register=(Button)findViewById(R.id.button5);
+        hint=(TextView)findViewById(R.id.textView5);
         cl=(Button)findViewById(R.id.cl);
         sharedpreferences = getSharedPreferences(mypreference,
                 Context.MODE_PRIVATE);
@@ -52,7 +54,13 @@ public class Main3Activity extends AppCompatActivity {
                 clear();
             }
         });
-
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main3Activity.this,Main5Activity.class);
+                startActivity(intent);
+            }
+        });
     }
     public void clear(){
 

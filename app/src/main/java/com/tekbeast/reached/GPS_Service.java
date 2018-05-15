@@ -131,7 +131,7 @@ public class GPS_Service extends Service {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 0, listener);
 
     }
 
